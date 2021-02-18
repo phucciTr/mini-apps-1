@@ -26,10 +26,13 @@ class F1 extends React.Component {
   getNextForm(e) {
     e.preventDefault();
 
-    let data = this.getInputs();
-    console.log('data = ', data);
+    if (this.isFormReady()) {
 
-    if (this.areFormsFilled()) {
+      let data = this.getInputs();
+      console.log('data = ', data);
+
+      request.createUser(data);
+
       this.props.next();
     }
   }
@@ -41,7 +44,7 @@ class F1 extends React.Component {
     return this.state.data;
   }
 
-  areFormsFilled() {
+  isFormReady() {
     return this.state.name !== '' && this.state.email !== '' && this.state.password !== '';
   }
 
@@ -56,11 +59,11 @@ class F1 extends React.Component {
           </label> <br/>
 
           <label>
-            Email: <input type="text" value={this.state.email} onChange={this.handleEmailChange.bind(this)} />
+            Email: <input type="text" autoComplete="username" value={this.state.email} onChange={this.handleEmailChange.bind(this)} />
           </label> <br/>
 
           <label>
-            Password: <input type="text" type="password" value={this.state.password} onChange={this.handlePasswordChange.bind(this)} />
+            Password: <input type="password" autoComplete="new-password" value={this.state.password} onChange={this.handlePasswordChange.bind(this)} />
           </label> <br/>
 
           <input type="submit" value="submit"/>
