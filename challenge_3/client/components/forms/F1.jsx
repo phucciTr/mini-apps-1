@@ -3,7 +3,7 @@ class F1 extends React.Component {
     super(props);
 
     this.state = {
-      data: [],
+      data: {},
       name: '',
       email: '',
       password: ''
@@ -28,19 +28,19 @@ class F1 extends React.Component {
 
     if (this.isFormReady()) {
 
-      let data = this.getInputs();
-      console.log('data = ', data);
+      let form = this.getInputs();
+      console.log('data = ', form);
 
-      request.createUser(data);
+      request.createUser(form);
 
       this.props.next();
     }
   }
 
   getInputs() {
-    this.state.data.push({ name: this.state.name });
-    this.state.data.push({ email: this.state.email });
-    this.state.data.push({ password: this.state.password });
+    this.state.data.name = this.state.name;
+    this.state.data.email = this.state.email;
+    this.state.data.password = this.state.password;
     return this.state.data;
   }
 

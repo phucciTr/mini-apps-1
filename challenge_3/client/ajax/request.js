@@ -4,8 +4,8 @@ var request = {
       method: 'POST',
       url: '/user',
       data: { form: JSON.stringify(data) },
-      success: () => console.log(`${data} successfully sent`),
-      error: () => console.log(`failed to send ${data}`)
+      success: () => console.log(`user ${data.name} sign up successfully sent`),
+      error: () => console.log(`failed to sign up ${data[0].name}`)
     });
   }
 }
