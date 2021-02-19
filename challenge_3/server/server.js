@@ -14,8 +14,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post('/user', (req, res) => {
-  models.User.create(JSON.parse(req.body.form));
-  res.sendStatus(201);
+  models.User.create(JSON.parse(req.body.form))
+    .then((results) => res.sendStatus(201))
+    .catch((err) => res.sendStatus(400));
 });
 
 app.listen(port, () => {

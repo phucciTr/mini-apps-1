@@ -2,8 +2,8 @@ module.exports = (db) => {
   return db.queryAsync(
     `CREATE TABLE IF NOT EXISTS users (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      username VARCHAR(20),
-      email VARCHAR(40),
+      username VARCHAR(20) UNIQUE KEY ,
+      email VARCHAR(40) UNIQUE KEY,
       password VARCHAR(60)
     );`
   )

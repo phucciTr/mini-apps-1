@@ -3,7 +3,7 @@ class F1 extends React.Component {
     super(props);
 
     this.state = {
-      data: {},
+      form: {},
       name: '',
       email: '',
       password: ''
@@ -23,25 +23,21 @@ class F1 extends React.Component {
     this.setState({ password: e.target.value });
   }
 
-  getNextForm(e) {
+  submitForm(e) {
     e.preventDefault();
 
     if (this.isFormReady()) {
-
-      let form = this.getInputs();
-      console.log('data = ', form);
-
-      request.createUser(form);
-
-      this.props.next();
+      request.createUser(this.getForm(), () => {
+        this.props.nextForm();
+      });
     }
   }
 
-  getInputs() {
-    this.state.data.name = this.state.name;
-    this.state.data.email = this.state.email;
-    this.state.data.password = this.state.password;
-    return this.state.data;
+  getForm() {
+    this.state.form.username = this.state.name;
+    this.state.form.email = this.state.email;
+    this.state.form.password = this.state.password;
+    return this.state.form;
   }
 
   isFormReady() {
@@ -53,7 +49,7 @@ class F1 extends React.Component {
       <div>
         <h1>F1</h1>
 
-        <form onSubmit={this.getNextForm.bind(this)}>
+        <form onSubmit={this.submitForm.bind(this)}>
           <label>
             Name: <input type="text" value={this.state.name} onChange={this.handleNameChange.bind(this)} />
           </label> <br/>
