@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const db = require('./db/index');
 const models = require('./models/index');
-console.log('models = ', models);
 
 
 const app = express();
@@ -15,6 +14,12 @@ app.use(bodyParser.json());
 
 app.post('/user', (req, res) => {
   models.User.create(JSON.parse(req.body.form))
+    .then((userId) => res.status(201).json(userId))
+    .catch((err) => res.sendStatus(400));
+});
+
+app.post('/location', (req, res) => {
+  models.User.saveAddress(JSON.parse(req.body.form))
     .then((results) => res.sendStatus(201))
     .catch((err) => res.sendStatus(400));
 });

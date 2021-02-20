@@ -3,7 +3,6 @@ class F1 extends React.Component {
     super(props);
 
     this.state = {
-      form: {},
       name: '',
       email: '',
       password: ''
@@ -27,17 +26,19 @@ class F1 extends React.Component {
     e.preventDefault();
 
     if (this.isFormReady()) {
-      request.createUser(this.getForm(), () => {
+      request.createUser(this.getForm(), (userId) => {
+        this.props.saveId(userId);
         this.props.nextForm();
       });
     }
   }
 
   getForm() {
-    this.state.form.username = this.state.name;
-    this.state.form.email = this.state.email;
-    this.state.form.password = this.state.password;
-    return this.state.form;
+    return {
+      username: this.state.name,
+      email: this.state.email,
+      password: this.state.password
+    }
   }
 
   isFormReady() {
