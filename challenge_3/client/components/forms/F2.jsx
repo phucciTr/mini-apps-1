@@ -30,7 +30,7 @@ class F2 extends React.Component {
       userId: this.props.userId,
       address: this.state.address,
       city: this.state.city,
-      zipcode: this.state.zip
+      zipcode: this.state.zipcode
     }
   }
 
