@@ -5,20 +5,14 @@ class F2 extends React.Component {
     this.state = {
       address: '',
       city: '',
-      zip: '',
+      zipcode: '',
     }
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleAddressChange(e) {
-    this.setState({ address: e.target.value });
-  }
-
-  handleCityChange(e) {
-    this.setState({ city: e.target.value });
-  }
-
-  handleZipChange(e) {
-    this.setState({ zip: e.target.value });
+  handleChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   submitForm(e) {
@@ -51,17 +45,16 @@ class F2 extends React.Component {
 
         <form onSubmit={this.submitForm.bind(this)} >
           <label>
-            Address: <input type="text" value={this.state.address} onChange={this.handleAddressChange.bind(this)} />
+            Address: <input type="text" name="address" value={this.state.address} onChange={this.handleChange} />
           </label> <br/>
 
           <label>
-            City: <input type="text" value={this.state.city} onChange={this.handleCityChange.bind(this)} />
+            City: <input type="text" name="city" value={this.state.city} onChange={this.handleChange} />
           </label> <br/>
 
           <label>
-            Zip Code: <input type="text" value={this.state.zip} onChange={this.handleZipChange.bind(this)} />
+            Zip Code: <input type="text" name="zipcode" value={this.state.zipcode} onChange={this.handleChange} />
           </label> <br/>
-
 
           <input type="submit" value="submit" />
         </form>
@@ -70,9 +63,3 @@ class F2 extends React.Component {
     )
   }
 }
-
-// var F2 = () => (
-//   <div>
-//     <h1>F2</h1>
-//   </div>
-// );

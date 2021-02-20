@@ -8,18 +8,11 @@ class F1 extends React.Component {
       password: ''
     };
 
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleNameChange(e) {
-    this.setState({ name: e.target.value });
-  }
-
-  handleEmailChange(e) {
-    this.setState({ email: e.target.value });
-  }
-
-  handlePasswordChange(e) {
-    this.setState({ password: e.target.value });
+  handleChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   submitForm(e) {
@@ -52,18 +45,18 @@ class F1 extends React.Component {
 
         <form onSubmit={this.submitForm.bind(this)}>
           <label>
-            Name: <input type="text" value={this.state.name} onChange={this.handleNameChange.bind(this)} />
+            Name: <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
           </label> <br/>
 
           <label>
-            Email: <input type="text" autoComplete="username" value={this.state.email} onChange={this.handleEmailChange.bind(this)} />
+            Email: <input type="text" name="email" autoComplete="username" value={this.state.email} onChange={this.handleChange} />
           </label> <br/>
 
           <label>
-            Password: <input type="password" autoComplete="new-password" value={this.state.password} onChange={this.handlePasswordChange.bind(this)} />
+            Password: <input type="password" name="password" autoComplete="new-password" value={this.state.password} onChange={this.handleChange} />
           </label> <br/>
 
-          <input type="submit" value="submit"/>
+          <input type="submit" value="next"/>
         </form>
 
       </div>
