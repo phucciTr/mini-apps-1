@@ -14,8 +14,7 @@ module.exports = (db) => {
           userId INT UNIQUE KEY,
           address VARCHAR(60) UNIQUE KEY,
           city VARCHAR(50),
-          zipcode INT,
-          FOREIGN KEY (userId) REFERENCES users(id)
+          zipcode INT
         );`
       )
     })
