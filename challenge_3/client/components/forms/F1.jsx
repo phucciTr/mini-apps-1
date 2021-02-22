@@ -20,6 +20,7 @@ class F1 extends React.Component {
 
     if (this.isFormReady()) {
       request.createUser(this.getForm(), (userId) => {
+        this.props.addToSummary(this.getForm());
         this.props.saveId(userId);
         this.props.nextForm();
       });

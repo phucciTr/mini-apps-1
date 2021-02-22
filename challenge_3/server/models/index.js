@@ -21,11 +21,27 @@ const User = {
             cb(err, null);
           });
       })
+  },
+
+  saveCard: (cardInfo, cb) => {
+    db.queryAsync('INSERT INTO credit_card SET ?', cardInfo)
+      .then((results) => {
+        console.log('results = ', results);
+        cb(null, results);
+      })
+      .catch((err) => {
+        db.queryAsync(userQuery, cardInfo.userId)
+          .then(([{username}]) => {
+            console.log(`INSERTING CARD INFO FOR USER "${username}" ERR = `, err);
+            cb(err, null);
+          });
+      });
   }
 };
 
 User.create = Promise.promisify(User.create);
 User.saveAddress = Promise.promisify(User.saveAddress);
+User.saveCard = Promise.promisify(User.saveCard);
 module.exports.User = User;
 
 

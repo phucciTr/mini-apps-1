@@ -17,5 +17,17 @@ var request = {
       success: successCb,
       error: () => console.log(`failed to collect location @ ${data.address}`)
     });
+  },
+
+  saveCard: (data, successCb) => {
+    $.ajax({
+      method: 'POST',
+      url: 'card',
+      data: { form: JSON.stringify(data) },
+      success: successCb,
+      error: () => console.log(`failed to collect card info for card "${data.card_number}"`)
+    });
   }
+
+
 }

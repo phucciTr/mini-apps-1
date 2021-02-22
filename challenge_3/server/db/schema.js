@@ -18,5 +18,16 @@ module.exports = (db) => {
         );`
       )
     })
-    .catch((err) => console.log('CREATING users TABLE ERR = ', err));
+    .then(() => {
+      return db.queryAsync(
+        `CREATE TABLE IF NOT EXISTS credit_card (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          userId INT UNIQUE KEY,
+          card_number INT UNIQUE KEY,
+          cvv INT,
+          zipcode INT
+        );`
+      )
+    })
+    .catch((err) => console.log('CREATING TABLE ERR = ', err));
 };

@@ -24,6 +24,12 @@ app.post('/location', (req, res) => {
     .catch((err) => res.sendStatus(400));
 });
 
+app.post('/card', (req, res) => {
+  models.User.saveCard(JSON.parse(req.body.form))
+    .then((results) => res.sendStatus(201))
+    .catch((err) => res.sendStatus(400));
+});
+
 app.listen(port, () => {
   console.log('Listening for requests at port:', port);
 });

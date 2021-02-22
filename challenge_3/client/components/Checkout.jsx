@@ -1,4 +1,4 @@
-var Button = ({checkOut}) => (
+var Checkout = ({checkOut}) => (
   <div>
     <h1>Hello</h1>
     <button onClick={checkOut}>

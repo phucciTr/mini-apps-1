@@ -20,6 +20,7 @@ class F2 extends React.Component {
 
     if (this.isFormReady()) {
       request.saveLoc(this.getForm(), () => {
+        this.props.addToSummary(this.getForm());
         this.props.nextForm();
       });
     }
@@ -35,7 +36,7 @@ class F2 extends React.Component {
   }
 
   isFormReady() {
-    return this.state.address !== '' && this.state.city !== '' && this.state.zip !== '';
+    return this.state.address !== '' && this.state.city !== '' && this.state.zipcode !== '';
   }
 
   render() {
@@ -53,10 +54,10 @@ class F2 extends React.Component {
           </label> <br/>
 
           <label>
-            Zip Code: <input type="text" name="zipcode" value={this.state.zipcode} onChange={this.handleChange} />
+            Zip Code: <input type="number" name="zipcode" value={this.state.zipcode} onChange={this.handleChange} />
           </label> <br/>
 
-          <input type="submit" value="submit" />
+          <input type="submit" value="next" />
         </form>
 
       </div>
