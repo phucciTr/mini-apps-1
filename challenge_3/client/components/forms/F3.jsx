@@ -20,8 +20,6 @@ class F3 extends React.Component {
     e.preventDefault();
 
     if (this.isFormReady()) {
-      let form = this.getForm();
-
       request.saveCard(this.getForm(), () => {
         this.props.addToSummary(this.getForm());
         this.props.nextForm();
