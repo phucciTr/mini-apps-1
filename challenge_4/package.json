@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "build": "webpack --watch",
-    "bundle": "npm run start & npm run build"
+    "bundle": "npm run build & npm run start"
   },
   "keywords": [],
   "author": "",
