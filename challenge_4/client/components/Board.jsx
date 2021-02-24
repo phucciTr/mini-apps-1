@@ -12,7 +12,7 @@ class Board extends React.Component {
       bottomRow: this.props.boardSize - 1
     }
 
-    this.placeDisc = this.placeDisc.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
   }
 
@@ -23,18 +23,20 @@ class Board extends React.Component {
   createBoardModel() {
     _.range(this.props.boardSize).map(() => {
       let row = _.range(this.props.boardSize + 1).map(() => null);
-      this.state.board.push(row);
+      let newBoard  = this.state.board;
+      newBoard.push(row);
+      this.setState({ board: newBoard });
     });
 
   }
 
-  placeDisc(col) {
+  handleClick(col) {
     let currentRow = this.state.bottomRow;
 
     !this.isCellTaken(currentRow, col) ?
-      this.place(currentRow, col) :
+      this.placeDisc(currentRow, col) :
       this.getToOpenCell(currentRow, col, (openRow, openCol) => {
-        return this.place(openRow, openCol);
+        return this.placeDisc(openRow, openCol);
       });
 
     console.log('this.state.board = ', this.state.board);
@@ -50,8 +52,10 @@ class Board extends React.Component {
     return this.state.board[row][col];
   }
 
-  place(row, col) {
-    this.state.board[row][col] = 'O';
+  placeDisc(row, col) {
+    let newBoard = this.state.board;
+    newBoard[row][col] = 'O';
+    this.setState({ board: newBoard });
   }
 
 
@@ -61,7 +65,7 @@ class Board extends React.Component {
         <table>
           <tbody>
             {_.range(this.props.boardSize).map((rowIndex) =>
-                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} placeDisc={this.placeDisc} board={this.state.board} />
+                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} handleClick={this.handleClick} board={this.state.board} />
               )}
           </tbody>
         </table>
