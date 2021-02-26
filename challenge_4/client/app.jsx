@@ -7,7 +7,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      size: 4
+      numberOfRows: 4
     }
   }
 
@@ -15,7 +15,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>Hello</h1>
-        <Board boardSize={this.state.size} />
+        <Board boardSize={this.state.numberOfRows} />
       </div>
     );
   }

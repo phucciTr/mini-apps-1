@@ -10,10 +10,9 @@ class Board extends React.Component {
 
     this.state = {
       board: [],
-      bottomRow: this.props.boardSize - 1,
-      lastCol: this.props.boardSize,
       gameOver: false,
-      currentTurn: 'R'
+      currentTurn: 'R',
+      winner: null
     }
 
     this.handleClick = this.handleClick.bind(this);
@@ -35,11 +34,11 @@ class Board extends React.Component {
   }
 
   handleClick(col) {
-    let currentBottomRow = this.state.bottomRow;
+    let bottomRow = this.props.boardSize - 1;
 
-    !this.isCellTaken(currentBottomRow, col) ?
-      this.placeDisc(currentBottomRow, col) :
-      this.getToOpenCell(currentBottomRow, col, (openRow, openCol) => {
+    !this.isCellTaken(bottomRow, col) ?
+      this.placeDisc(bottomRow, col) :
+      this.getToOpenCell(bottomRow, col, (openRow, openCol) => {
         this.placeDisc(openRow, openCol);
       });
 
@@ -61,13 +60,19 @@ class Board extends React.Component {
 
       checkWinner(row, col, currentPlayer, newBoard, (winner) => {
         if (winner) {
-          console.log(`${winner} WINS!`);
+          this.setWinner(winner);
           this.setState({ gameOver: true });
         }
       });
 
       this.toggleTurn();
     }
+  }
+
+  setWinner(winner) {
+    winner === 'R' ?
+      this.setState({ winner: 'RED' }) :
+      this.setState({ winner: 'YELLOW' });
   }
 
   isCurrentPlayer(turn) {
@@ -99,6 +104,8 @@ class Board extends React.Component {
               )}
           </tbody>
         </table>
+        {this.state.winner &&
+                        <h1>{this.state.winner} WINS!</h1>}
       </div>
     );
   }
