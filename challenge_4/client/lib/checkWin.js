@@ -1,4 +1,3 @@
-
 const checkWin = (row, col, player, board, cb) => {
   console.log('inserted col = ', col);
   console.log('inserted row = ', row);
@@ -12,7 +11,26 @@ const checkWin = (row, col, player, board, cb) => {
   winner = hasRowWin(row, player, board, 0);
   if (winner) { return cb(winner); }
 
+  winner = hasColWin(col, player, board, 0);
+  if (winner) { return cb(winner); }
+
+  cb();
 }
+
+var hasColWin = (col, player, board, winCount) => {
+
+  for (let row in board) {
+    let currentSpot = board[row][col];
+
+    if (currentSpot === player) {
+      winCount++;
+    } else if (winCount > 0 && currentSpot !== player && winCount < 4) {
+      return null;
+    }
+
+    if (winCount >= 4) { return player; }
+  }
+};
 
 var hasRowWin = (row, player, board, winCount) => {
 
@@ -27,8 +45,6 @@ var hasRowWin = (row, player, board, winCount) => {
 
     if (winCount >= 4) { return player; }
   }
-
-  return null;
 };
 
 var hasDiagWin = ([row, col], winSet, player, board, bottomRow, lastCol) => {

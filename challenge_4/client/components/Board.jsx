@@ -52,11 +52,11 @@ class Board extends React.Component {
     let currentPlayer = this.state.currentTurn;
 
     if (!this.state.gameOver) {
-      if (!this.isCellTaken(row, col)) {
-        this.isCurrentPlayer('R') ?
-          newBoard[row][col] = 'R' :
-          newBoard[row][col] = 'Y';
-      }
+
+      this.isCurrentPlayer('R') ?
+        newBoard[row][col] = 'R' :
+        newBoard[row][col] = 'Y';
+
       this.setState({ board: newBoard });
 
       checkWinner(row, col, currentPlayer, newBoard, (winner) => {
