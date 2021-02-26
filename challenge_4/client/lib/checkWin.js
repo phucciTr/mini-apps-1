@@ -9,12 +9,12 @@ const checkWin = (row, col, player, board, cb) => {
   let winner = hasDiagWin([row, col], [], player, board, bottomRow, lastCol);
   if (winner) { return cb(winner); }
 
-  winner = hasColWin([row, col], player, board, 0);
+  winner = hasRowWin(row, player, board, 0);
   if (winner) { return cb(winner); }
 
 }
 
-var hasColWin = ([row, col], player, board, winCount) => {
+var hasRowWin = (row, player, board, winCount) => {
 
   for (let col in board[row]) {
     let currentSpot = board[row][col];
