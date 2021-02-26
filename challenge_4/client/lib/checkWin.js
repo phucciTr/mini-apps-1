@@ -1,7 +1,10 @@
 
-const checkWin = (row, col, player, board, bottomRow, lastCol, cb) => {
+const checkWin = (row, col, player, board, cb) => {
   console.log('inserted col = ', col);
   console.log('inserted row = ', row);
+
+  let bottomRow = board.size - 1;
+  let lastCol = board.size;
 
   let winner = hasDiagWin([row, col], player, board, bottomRow, lastCol);
   cb(winner);

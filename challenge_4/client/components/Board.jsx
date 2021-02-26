@@ -34,12 +34,6 @@ class Board extends React.Component {
 
   }
 
-  toggleTurn() {
-    return this.isCurrentPlayer('R') ?
-      this.setState({ currentTurn: 'Y' }) :
-      this.setState({ currentTurn: 'R' });
-  }
-
   handleClick(col) {
     let currentBottomRow = this.state.bottomRow;
 
@@ -54,13 +48,10 @@ class Board extends React.Component {
   }
 
   placeDisc(row, col) {
+    let newBoard = this.state.board;
+    let currentPlayer = this.state.currentTurn;
 
     if (!this.state.gameOver) {
-      let newBoard = this.state.board;
-      let currentPlayer = this.state.currentTurn;
-      let bottomRow = this.state.bottomRow;
-      let lastCol = this.state.lastCol;
-
       if (!this.isCellTaken(row, col)) {
         this.isCurrentPlayer('R') ?
           newBoard[row][col] = 'R' :
@@ -68,7 +59,7 @@ class Board extends React.Component {
       }
       this.setState({ board: newBoard });
 
-      checkWinner(row, col, currentPlayer, newBoard, bottomRow, lastCol, (winner) => {
+      checkWinner(row, col, currentPlayer, newBoard, (winner) => {
         if (winner) {
           console.log(`${winner} WINS!`);
           this.setState({ gameOver: true });
@@ -90,6 +81,12 @@ class Board extends React.Component {
 
   isCellTaken(row, col) {
     return this.state.board[row][col];
+  }
+
+  toggleTurn() {
+    return this.isCurrentPlayer('R') ?
+      this.setState({ currentTurn: 'Y' }) :
+      this.setState({ currentTurn: 'R' });
   }
 
   render() {
