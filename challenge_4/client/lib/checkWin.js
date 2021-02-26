@@ -3,22 +3,38 @@ const checkWin = (row, col, player, board, cb) => {
   console.log('inserted col = ', col);
   console.log('inserted row = ', row);
 
-  let bottomRow = board.size - 1;
-  let lastCol = board.size;
+  let bottomRow = board.length - 1;
+  let lastCol = board.length;
 
-  let winner = hasDiagWin([row, col], player, board, bottomRow, lastCol);
-  cb(winner);
+  let winner = hasDiagWin([row, col], [], player, board, bottomRow, lastCol);
+  if (winner) { return cb(winner); }
+
+  winner = hasColWin([row, col], player, board, 0);
+  if (winner) { return cb(winner); }
+
 }
 
+var hasColWin = ([row, col], player, board, winCount) => {
 
-var hasDiagWin = (startPoint, player, board, bottomRow, lastCol) => {
-  return checkDiag(startPoint, [], player, board, bottomRow, lastCol);
-}
+  for (let col in board[row]) {
+    let currentSpot = board[row][col];
 
-var checkDiag = ([row, col], winSet, player, board, bottomRow, lastCol) => {
+    if (currentSpot === player) {
+      winCount++;
+    } else if (winCount > 0 && currentSpot !== player && winCount < 4) {
+      return null;
+    }
+
+    if (winCount >= 4) { return player; }
+  }
+
+  return null;
+};
+
+var hasDiagWin = ([row, col], winSet, player, board, bottomRow, lastCol) => {
   winSet = checkMajorTopDiag(row, col, winSet, board);
   winSet = checkMajorBottomDiag(row, col, winSet, board, bottomRow, lastCol);
-  let winner = checkForWin(winSet, player);
+  let winner = checkForDiagWin(winSet, player);
 
   if (winner) { return winner; }
 
@@ -26,12 +42,12 @@ var checkDiag = ([row, col], winSet, player, board, bottomRow, lastCol) => {
 
   winSet = checkMinorTopDiag(row, col, winSet, board, lastCol);
   winSet = checkMinorBottomDiag(row, col, winSet, board, bottomRow, lastCol);
-  winner = checkForWin(winSet, player);
+  winner = checkForDiagWin(winSet, player);
 
   return winner;
 }
 
-var checkForWin = (winSet, player) => {
+var checkForDiagWin = (winSet, player) => {
   if (winSet.length === 4) {
     winSet = new Set(winSet);
 

@@ -8,7 +8,7 @@ const Cell = (props) => {
 
   return !player ?
     <EmptyCell handleClick={props.handleClick} col={props.col} /> :
-    <ColoredCell handleClick={props.handleClick} col={props.col} player={player} />;
+    <ColoredCell col={props.col} player={player} />;
 }
 
 export default Cell;
