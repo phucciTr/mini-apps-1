@@ -2,6 +2,7 @@ import React from 'react';
 import RectDOM from 'react-dom';
 import _ from 'lodash';
 import Row from './Row.jsx';
+import checkWinner from './../lib/checkWin.js';
 
 class Board extends React.Component {
   constructor(props) {
@@ -9,7 +10,10 @@ class Board extends React.Component {
 
     this.state = {
       board: [],
-      bottomRow: this.props.boardSize - 1
+      bottomRow: this.props.boardSize - 1,
+      lastCol: this.props.boardSize,
+      gameOver: false,
+      currentTurn: 'R'
     }
 
     this.handleClick = this.handleClick.bind(this);
@@ -30,34 +34,63 @@ class Board extends React.Component {
 
   }
 
-  handleClick(col) {
-    let currentRow = this.state.bottomRow;
+  toggleTurn() {
+    return this.isCurrentPlayer('R') ?
+      this.setState({ currentTurn: 'Y' }) :
+      this.setState({ currentTurn: 'R' });
+  }
 
-    !this.isCellTaken(currentRow, col) ?
-      this.placeDisc(currentRow, col) :
-      this.getToOpenCell(currentRow, col, (openRow, openCol) => {
-        return this.placeDisc(openRow, openCol);
+  handleClick(col) {
+    let currentBottomRow = this.state.bottomRow;
+
+    !this.isCellTaken(currentBottomRow, col) ?
+      this.placeDisc(currentBottomRow, col) :
+      this.getToOpenCell(currentBottomRow, col, (openRow, openCol) => {
+        this.placeDisc(openRow, openCol);
       });
 
     console.log('this.state.board = ', this.state.board);
     console.log('');
   }
 
+  placeDisc(row, col) {
+
+    if (!this.state.gameOver) {
+      let newBoard = this.state.board;
+      let currentPlayer = this.state.currentTurn;
+      let bottomRow = this.state.bottomRow;
+      let lastCol = this.state.lastCol;
+
+      if (!this.isCellTaken(row, col)) {
+        this.isCurrentPlayer('R') ?
+          newBoard[row][col] = 'R' :
+          newBoard[row][col] = 'Y';
+      }
+      this.setState({ board: newBoard });
+
+      checkWinner(row, col, currentPlayer, newBoard, bottomRow, lastCol, (winner) => {
+        if (winner) {
+          console.log(`${winner} WINS!`);
+          this.setState({ gameOver: true });
+        }
+      });
+
+      this.toggleTurn();
+    }
+  }
+
+  isCurrentPlayer(turn) {
+    return this.state.currentTurn === turn;
+  }
+
   getToOpenCell(row, col, cb) {
-    while (this.isCellTaken(row, col) && row >= 0) { row--; }
+    while (this.isCellTaken(row, col) && row > 0) { row--; }
     cb(row, col);
   }
 
   isCellTaken(row, col) {
     return this.state.board[row][col];
   }
-
-  placeDisc(row, col) {
-    let newBoard = this.state.board;
-    newBoard[row][col] = 'O';
-    this.setState({ board: newBoard });
-  }
-
 
   render() {
     return (
