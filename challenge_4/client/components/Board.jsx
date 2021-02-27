@@ -12,10 +12,16 @@ class Board extends React.Component {
       board: [],
       gameOver: false,
       currentTurn: 'R',
-      winner: null
+      winner: null,
+      onHover: [],
+      hoveredCol: null,
     }
 
     this.handleClick = this.handleClick.bind(this);
+    this.handleHover = this.handleHover.bind(this);
+    this.isOnHover = this.isOnHover.bind(this);
+    this.handleHoverLeave = this.handleHoverLeave.bind(this);
+    this.isOnHoverRow = this.isOnHoverRow.bind(this);
 
   }
 
@@ -31,6 +37,16 @@ class Board extends React.Component {
       this.setState({ board: newBoard });
     });
 
+  }
+
+  handleHover(row, col) {
+    let onHover =  [row, col];
+    this.setState({ onHover: onHover });
+    this.setState({ hoveredCol: col});
+  }
+
+  handleHoverLeave(row, col) {
+    this.setState({ hoveredCol: null });
   }
 
   handleClick(col) {
@@ -67,6 +83,14 @@ class Board extends React.Component {
     }
   }
 
+  isOnHoverRow(col) {
+    return col === this.state.hoveredCol;
+  }
+
+  isOnHover(row, col) {
+    return row === this.state.onHover[0] && col === this.state.onHover[1];
+  }
+
   setWinner(winner) {
     winner === 'R' ?
       this.setState({ winner: 'RED' }) :
@@ -98,7 +122,7 @@ class Board extends React.Component {
         <table>
           <tbody>
             {_.range(this.props.boardSize).map((rowIndex) =>
-                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} handleClick={this.handleClick} board={this.state.board} />
+                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} handleClick={this.handleClick} board={this.state.board} handleHover={this.handleHover} currentTurn={this.state.currentTurn} isOnHover={this.isOnHover} isOnHoverRow={this.isOnHoverRow} />
               )}
           </tbody>
         </table>
