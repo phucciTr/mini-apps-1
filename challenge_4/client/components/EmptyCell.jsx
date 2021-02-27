@@ -6,8 +6,8 @@ const EmptyCell = (props) => {
     return (
       <td
       onClick={() => props.handleClick(props.col)}>
-        {(props.currentTurn === 'Y') && <div className="yellow"></div>}
-        {(props.currentTurn === 'R') && <div className="red"></div>}
+        {(props.currentTurn === 'Y') && <div className="hoveredYellow"></div>}
+        {(props.currentTurn === 'R') && <div className="hoverRed"></div>}
       </td>
     );
   }
@@ -19,10 +19,10 @@ const EmptyCell = (props) => {
     onMouseLeave={() => props.handleHoverLeave(props.row, props.col)}>
 
       {props.isOnHover(props.row, props.col) &&
-          (props.currentTurn === 'Y') && <div className="yellow"></div>}
+          (props.currentTurn === 'Y') && <div className="hoveredYellow"></div>}
 
       {props.isOnHover(props.row, props.col) &&
-          (props.currentTurn === 'R') && <div className="red"></div>}
+          (props.currentTurn === 'R') && <div className="hoverRed"></div>}
     </td>
   );
 };
