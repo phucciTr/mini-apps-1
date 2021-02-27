@@ -2,7 +2,7 @@ import React from 'react';
 
 const EmptyCell = (props) => {
 
-  if (props.isOnHoverRow(props.col)) {
+  if (props.isOnHoverCol(props.col)) {
     return (
       <td
       onClick={() => props.handleClick(props.col)}>

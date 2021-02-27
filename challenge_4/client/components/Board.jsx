@@ -21,7 +21,7 @@ class Board extends React.Component {
     this.handleHover = this.handleHover.bind(this);
     this.isOnHover = this.isOnHover.bind(this);
     this.handleHoverLeave = this.handleHoverLeave.bind(this);
-    this.isOnHoverRow = this.isOnHoverRow.bind(this);
+    this.isOnHoverCol = this.isOnHoverCol.bind(this);
 
   }
 
@@ -83,7 +83,7 @@ class Board extends React.Component {
     }
   }
 
-  isOnHoverRow(col) {
+  isOnHoverCol(col) {
     return col === this.state.hoveredCol;
   }
 
@@ -122,7 +122,7 @@ class Board extends React.Component {
         <table>
           <tbody>
             {_.range(this.props.boardSize).map((rowIndex) =>
-                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} handleClick={this.handleClick} board={this.state.board} handleHover={this.handleHover} currentTurn={this.state.currentTurn} isOnHover={this.isOnHover} isOnHoverRow={this.isOnHoverRow} />
+                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} handleClick={this.handleClick} board={this.state.board} handleHover={this.handleHover} currentTurn={this.state.currentTurn} isOnHover={this.isOnHover} isOnHoverCol={this.isOnHoverCol} />
               )}
           </tbody>
         </table>
