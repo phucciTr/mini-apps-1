@@ -5,6 +5,7 @@ const checkWin = (row, col, player, board, cb) => {
   let bottomRow = board.length - 1;
   let lastCol = board.length;
 
+
   let winner = hasDiagWin([row, col], [], player, board, bottomRow, lastCol);
   if (winner) { return cb(winner); }
 
@@ -48,66 +49,73 @@ var hasRowWin = (row, player, board, winCount) => {
 };
 
 var hasDiagWin = ([row, col], winSet, player, board, bottomRow, lastCol) => {
-  winSet = checkMajorTopDiag(row, col, winSet, board);
-  winSet = checkMajorBottomDiag(row, col, winSet, board, bottomRow, lastCol);
-  let winner = checkForDiagWin(winSet, player);
+  let winner = checkMajorTopDiag(row, col, winSet, board, player);
+  if (winner) { return winner; }
 
+  winner = checkMajorBottomDiag(row, col, winSet, board, bottomRow, lastCol, player);
   if (winner) { return winner; }
 
   winSet = [];
 
-  winSet = checkMinorTopDiag(row, col, winSet, board, lastCol);
-  winSet = checkMinorBottomDiag(row, col, winSet, board, bottomRow, lastCol);
-  winner = checkForDiagWin(winSet, player);
+  winner = checkMinorTopDiag(row, col, winSet, board, lastCol, player);
+  if (winner) { return winner; }
+
+  winner = checkMinorBottomDiag(row, col, winSet, board, bottomRow, player);
+  if (winner) { return winner; }
 
   return winner;
 }
 
 var checkForDiagWin = (winSet, player) => {
-  if (winSet.length === 4) {
-    winSet = new Set(winSet);
-
-    if (winSet.size === 1 && winSet.has(player)) {
-      return player;
-    }
-  }
-  return null;
+  winSet = new Set(winSet);
+  return winSet.size === 1 && winSet.has(player) ? player : null;
 }
 
-var checkMajorBottomDiag = (row, col, winSet, board, bottomRow, lastCol) => {
+var checkMajorBottomDiag = (row, col, winSet, board, bottomRow, lastCol, player) => {
+
   while (row < bottomRow && col < lastCol) {
     row++;
     col++;
     winSet.push(board[row][col]);
+
+    if (winSet.length === 4) { return checkForDiagWin(winSet, player); }
   }
-  return winSet;
+  return null;
 }
 
-var checkMajorTopDiag = (row, col, winSet, board) => {
+var checkMajorTopDiag = (row, col, winSet, board, player) => {
   while (row >= 0 && col >= 0) {
     winSet.push(board[row][col]);
     row--;
     col--;
+
+    if (winSet.length === 4) { return checkForDiagWin(winSet, player); }
   }
-  return winSet;
+  return null;
 }
 
-var checkMinorTopDiag = (row, col, winSet, board, lastCol) => {
+var checkMinorTopDiag = (row, col, winSet, board, lastCol, player) => {
   while (row >= 0 && col <= lastCol + 1) {
     winSet.push(board[row][col]);
     row--;
     col++;
+
+    if (winSet.length === 4) { return checkForDiagWin(winSet, player); }
   }
-  return winSet;
+
+  return null;
 }
 
-var checkMinorBottomDiag = (row, col, winSet, board, bottomRow) => {
+var checkMinorBottomDiag = (row, col, winSet, board, bottomRow, player) => {
   while (row < bottomRow && col > 0) {
     row++;
     col--;
     winSet.push((board[row][col]));
+
+    if (winSet.length === 4) { return checkForDiagWin(winSet, player); }
   }
-  return winSet;
+
+  return null;
 }
 
 export default checkWin;

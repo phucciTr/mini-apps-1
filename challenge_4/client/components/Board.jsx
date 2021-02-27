@@ -2,7 +2,7 @@ import React from 'react';
 import RectDOM from 'react-dom';
 import _ from 'lodash';
 import Row from './Row.jsx';
-import checkWinner from './../lib/checkWin.js';
+import checkWinner from './../lib/checkWin.jsx';
 
 class Board extends React.Component {
   constructor(props) {
@@ -42,8 +42,6 @@ class Board extends React.Component {
         this.placeDisc(openRow, openCol);
       });
 
-    console.log('this.state.board = ', this.state.board);
-    console.log('');
   }
 
   placeDisc(row, col) {
