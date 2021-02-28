@@ -41,3 +41,22 @@ td {
   opacity: 0.2;
   background-color: yellow;
 }
+
+.insertRed {
+  border: 2px solid black;
+  border-radius: 30%;
+  height: 100px;
+  width: 100px;
+  opacity: 0.2;
+  background-color: orangered;
+}
+
+
+.insertYellow {
+  border: 2px solid black;
+  border-radius: 30%;
+  height: 100px;
+  width: 100px;
+  opacity: 0.2;
+  background-color: yellowgreen;
+}

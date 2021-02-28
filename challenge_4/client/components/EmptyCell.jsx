@@ -15,8 +15,7 @@ const EmptyCell = (props) => {
   return (
     <td
     onClick={() => props.handleClick(props.col)}
-    onMouseEnter={() => props.handleHover(props.row, props.col)}
-    onMouseLeave={() => props.handleHoverLeave(props.row, props.col)}>
+    onMouseEnter={() => props.handleHover(props.row, props.col)}>
 
       {props.isOnHover(props.row, props.col) &&
           (props.currentTurn === 'Y') && <div className="hoveredYellow"></div>}

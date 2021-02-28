@@ -15,6 +15,8 @@ class Board extends React.Component {
       winner: null,
       onHover: [],
       hoveredCol: null,
+      insertRow: null,
+      insertCol: null
     }
 
     this.handleClick = this.handleClick.bind(this);
@@ -22,6 +24,8 @@ class Board extends React.Component {
     this.isOnHover = this.isOnHover.bind(this);
     this.handleHoverLeave = this.handleHoverLeave.bind(this);
     this.isOnHoverCol = this.isOnHoverCol.bind(this);
+    this.isAnimating = this.isAnimating.bind(this);
+    this.isInsertLoc = this.isInsertLoc.bind(this);
 
   }
 
@@ -65,22 +69,36 @@ class Board extends React.Component {
     let currentPlayer = this.state.currentTurn;
 
     if (!this.state.gameOver) {
+      this.setState({ animateCol: this.state.hoveredCol });
+      this.setState({ insertRow: row });
+      this.setState({ insertCol: col });
 
-      this.isCurrentPlayer('R') ?
+      setTimeout(() => {
+        this.isCurrentPlayer('R') ?
         newBoard[row][col] = 'R' :
         newBoard[row][col] = 'Y';
 
-      this.setState({ board: newBoard });
+        this.setState({ board: newBoard });
 
-      checkWinner(row, col, currentPlayer, newBoard, (winner) => {
-        if (winner) {
-          this.setWinner(winner);
-          this.setState({ gameOver: true });
-        }
-      });
+        checkWinner(row, col, currentPlayer, newBoard, (winner) => {
+          if (winner) {
+            this.setWinner(winner);
+            this.setState({ gameOver: true });
+          }
+        });
 
-      this.toggleTurn();
+        this.setState({ animateCol: null });
+        this.setState({ insertRow: null });
+        this.setState({ insertCol: null });
+
+        this.toggleTurn();
+      }, 500);
+
     }
+  }
+
+  isAnimating(row, col) {
+    return this.state.animateCol === col && row < this.state.insertRow;
   }
 
   isOnHoverCol(col) {
@@ -89,6 +107,11 @@ class Board extends React.Component {
 
   isOnHover(row, col) {
     return row === this.state.onHover[0] && col === this.state.onHover[1];
+  }
+
+  isInsertLoc(row, col) {
+    return row === this.state.insertRow &&
+    !this.isCellTaken(row, col);
   }
 
   setWinner(winner) {
@@ -122,7 +145,7 @@ class Board extends React.Component {
         <table>
           <tbody>
             {_.range(this.props.boardSize).map((rowIndex) =>
-                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} handleClick={this.handleClick} board={this.state.board} handleHover={this.handleHover} currentTurn={this.state.currentTurn} isOnHover={this.isOnHover} isOnHoverCol={this.isOnHoverCol} />
+                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} handleClick={this.handleClick} board={this.state.board} handleHover={this.handleHover} currentTurn={this.state.currentTurn} isOnHover={this.isOnHover} isOnHoverCol={this.isOnHoverCol} isAnimating={this.isAnimating} isInsertLoc={this.isInsertLoc} />
               )}
           </tbody>
         </table>
