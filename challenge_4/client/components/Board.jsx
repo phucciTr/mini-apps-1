@@ -54,14 +54,15 @@ class Board extends React.Component {
   }
 
   handleClick(col) {
-    let bottomRow = this.props.boardSize - 1;
+    if (!this.state.isAnimating) {
+      let bottomRow = this.props.boardSize - 1;
 
-    !this.isCellTaken(bottomRow, col) ?
-      this.placeDisc(bottomRow, col) :
-      this.getToOpenCell(bottomRow, col, (openRow, openCol) => {
-        this.placeDisc(openRow, openCol);
-      });
-
+      !this.isCellTaken(bottomRow, col) ?
+        this.placeDisc(bottomRow, col) :
+        this.getToOpenCell(bottomRow, col, (openRow, openCol) => {
+          this.placeDisc(openRow, openCol);
+        });
+    }
   }
 
   placeDisc(row, col) {
