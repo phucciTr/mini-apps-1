@@ -16,7 +16,8 @@ class Board extends React.Component {
       onHover: [],
       hoveredCol: null,
       insertRow: null,
-      insertCol: null
+      insertCol: null,
+      isInAnimation: false,
     }
 
     this.handleClick = this.handleClick.bind(this);
@@ -54,7 +55,7 @@ class Board extends React.Component {
   }
 
   handleClick(col) {
-    if (!this.state.isAnimating) {
+    if (!this.state.isInAnimation) {
       let bottomRow = this.props.boardSize - 1;
 
       !this.isCellTaken(bottomRow, col) ?
@@ -73,6 +74,7 @@ class Board extends React.Component {
       this.setState({ animateCol: this.state.hoveredCol });
       this.setState({ insertRow: row });
       this.setState({ insertCol: col });
+      this.setState({ isInAnimation: true });
 
       setTimeout(() => {
         this.isCurrentPlayer('R') ?
@@ -91,6 +93,7 @@ class Board extends React.Component {
         this.setState({ animateCol: null });
         this.setState({ insertRow: null });
         this.setState({ insertCol: null });
+        this.setState({ isInAnimation: false });
 
         this.toggleTurn();
       }, 500);
