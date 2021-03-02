@@ -13,7 +13,7 @@
     "test": "mocha",
     "start": "nodemon server.js",
     "webpack": "webpack --watch",
-    "transpile": "babel ./client/lib/ --watch --out-dir public --ignore=node_modules --source-maps inline",
+    "transpile": "babel ./client/lib/ --watch --out-dir test --ignore=node_modules --source-maps inline",
     "build": "npm run webpack & npm run transpile"
   },
   "keywords": [],

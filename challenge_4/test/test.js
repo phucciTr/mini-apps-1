@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-const checkWinner = require('./../public/checkWin.js').default;
+const checkWinner = require('./checkWin.js').default;
 
 
 describe('Check Wins', () => {
