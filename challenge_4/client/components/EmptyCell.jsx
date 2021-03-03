@@ -1,28 +1,19 @@
 import React from 'react';
 
-const EmptyCell = (props) => {
+const EmptyCell = (props) => (
+  <td
+  id={props.id}
+  onClick={() => props.handleClick(props.col, props.id)}
+  onMouseEnter={() => props.handleHover(props.col)}>
 
-  if (props.isOnHoverCol(props.col)) {
-    return (
-      <td
-      onClick={() => props.handleClick(props.col)}>
-        {(props.currentTurn === 'Y') && <div className="hoveredYellow"></div>}
-        {(props.currentTurn === 'R') && <div className="hoverRed"></div>}
-      </td>
-    );
-  }
+    {props.isOnHoverCol(props.col) &&
+      props.currentTurn === 'Y' &&
+        <div id={props.id} className="hoveredYellow"></div>}
 
-  return (
-    <td
-    onClick={() => props.handleClick(props.col)}
-    onMouseEnter={() => props.handleHover(props.row, props.col)}>
+    {props.isOnHoverCol(props.col) &&
+      props.currentTurn === 'R' &&
+        <div id={props.id} className="hoverRed"></div>}
 
-      {props.isOnHover(props.row, props.col) &&
-          (props.currentTurn === 'Y') && <div className="hoveredYellow"></div>}
-
-      {props.isOnHover(props.row, props.col) &&
-          (props.currentTurn === 'R') && <div className="hoverRed"></div>}
-    </td>
-  );
-};
+  </td>
+);
 export default EmptyCell;

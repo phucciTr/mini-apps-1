@@ -7,7 +7,7 @@ const Cell = (props) => {
                 props.board[props.row][props.col] : null;
 
   return !player ?
-    <EmptyCell handleClick={props.handleClick} row={props.row}  col={props.col} handleHover={props.handleHover} currentTurn={props.currentTurn} isOnHover={props.isOnHover} isOnHoverCol={props.isOnHoverCol} /> :
+    <EmptyCell id={`${props.row}${props.col}`} handleClick={props.handleClick} row={props.row}  col={props.col} handleHover={props.handleHover} currentTurn={props.currentTurn} isOnHoverCol={props.isOnHoverCol} /> :
     <ColoredCell col={props.col} player={player} />;
 }
 

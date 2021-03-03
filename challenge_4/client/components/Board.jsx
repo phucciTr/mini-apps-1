@@ -3,6 +3,7 @@ import RectDOM from 'react-dom';
 import _ from 'lodash';
 import Row from './Row.jsx';
 import checkWinner from './../lib/checkWin.jsx';
+import $ from 'jquery';
 
 class Board extends React.Component {
   constructor(props) {
@@ -13,21 +14,18 @@ class Board extends React.Component {
       gameOver: false,
       currentTurn: 'R',
       winner: null,
-      onHover: [],
       hoveredCol: null,
-      insertRow: null,
-      insertCol: null,
       isInAnimation: false,
+      animateYpos: 0,
+      animateXpos: 0,
+      animateVisibility: 'hidden',
+      animateColor: 'red'
     }
 
+    this.animateInsert = this.animateInsert.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleHover = this.handleHover.bind(this);
-    this.isOnHover = this.isOnHover.bind(this);
-    this.handleHoverLeave = this.handleHoverLeave.bind(this);
     this.isOnHoverCol = this.isOnHoverCol.bind(this);
-    this.isAnimating = this.isAnimating.bind(this);
-    this.isInsertLoc = this.isInsertLoc.bind(this);
-
   }
 
   componentDidMount() {
@@ -44,39 +42,68 @@ class Board extends React.Component {
 
   }
 
-  handleHover(row, col) {
-    let onHover =  [row, col];
-    this.setState({ onHover: onHover });
-    this.setState({ hoveredCol: col});
-  }
 
-  handleHoverLeave(row, col) {
-    this.setState({ hoveredCol: null });
-  }
+  handleClick(col, id) {
 
-  handleClick(col) {
+    console.log('clickedId = ', id);
+    console.log('clicked col = ', col);
+
     if (!this.state.isInAnimation) {
       let bottomRow = this.props.boardSize - 1;
 
       !this.isCellTaken(bottomRow, col) ?
-        this.placeDisc(bottomRow, col) :
+        this.placeDisc(bottomRow, col, id) :
         this.getToOpenCell(bottomRow, col, (openRow, openCol) => {
-          this.placeDisc(openRow, openCol);
+          this.placeDisc(openRow, openCol, id);
         });
     }
   }
 
-  placeDisc(row, col) {
+  animateInsert(row, col, clickedId, cb) {
+    this.setState({ isInAnimation: true });
+
+    let frameRate = 20;
+    let yVelocity = 3;
+
+    let insertedId = `${row}${col}`;
+    let insertedPos = $(`#${insertedId}`)[0].getBoundingClientRect()
+
+    let animateCell = $('#ani')[0];
+    let animateId = `0${clickedId[1]}`;
+    let animateStartPos = $(`#${animateId}`)[0].getBoundingClientRect();
+
+    this.setState({
+      animateXpos: animateStartPos.x - 3,
+      animateYpos: animateStartPos.y,
+      animateVisibility: 'visible'
+    });
+
+    this.isCurrentPlayer('R') ?
+      this.setState({ animateColor: 'red' }) :
+      this.setState({ animateColor: 'yellow' });
+
+    let interval = setInterval(() => {
+      let animatedPos = animateCell.getBoundingClientRect();
+
+      if (animatedPos.top >= insertedPos.top) { cb(interval); }
+
+      if (animatedPos.top < insertedPos.top) {
+        this.setState({ animateYpos: this.state.animateYpos += yVelocity });
+      }
+
+    }, frameRate);
+  }
+
+  placeDisc(row, col, clickedId) {
     let newBoard = this.state.board;
     let currentPlayer = this.state.currentTurn;
 
     if (!this.state.gameOver) {
-      this.setState({ animateCol: this.state.hoveredCol });
-      this.setState({ insertRow: row });
-      this.setState({ insertCol: col });
-      this.setState({ isInAnimation: true });
 
-      setTimeout(() => {
+      this.animateInsert(row, col, clickedId, (interval) => {
+        this.setState({ isInAnimation: false });
+        clearInterval(interval);
+
         this.isCurrentPlayer('R') ?
         newBoard[row][col] = 'R' :
         newBoard[row][col] = 'Y';
@@ -90,38 +117,27 @@ class Board extends React.Component {
           }
         });
 
-        this.setState({ animateCol: null });
-        this.setState({ insertRow: null });
-        this.setState({ insertCol: null });
-        this.setState({ isInAnimation: false });
-
+        this.setState({ animateVisibility: 'hidden'});
         this.toggleTurn();
-      }, 500);
+      });
 
     }
   }
 
-  isAnimating(row, col) {
-    return this.state.animateCol === col && row < this.state.insertRow;
-  }
 
-  isOnHoverCol(col) {
-    return col === this.state.hoveredCol;
-  }
-
-  isOnHover(row, col) {
-    return row === this.state.onHover[0] && col === this.state.onHover[1];
-  }
-
-  isInsertLoc(row, col) {
-    return row === this.state.insertRow &&
-    !this.isCellTaken(row, col);
-  }
 
   setWinner(winner) {
     winner === 'R' ?
       this.setState({ winner: 'RED' }) :
       this.setState({ winner: 'YELLOW' });
+  }
+
+  handleHover(col) {
+    this.setState({ hoveredCol: col});
+  }
+
+  isOnHoverCol(col) {
+    return col === this.state.hoveredCol;
   }
 
   isCurrentPlayer(turn) {
@@ -144,12 +160,21 @@ class Board extends React.Component {
   }
 
   render() {
+
+    let pos = {
+      position: 'relative',
+      visibility: this.state.animateVisibility,
+      top: this.state.animateYpos,
+      left: this.state.animateXpos
+    }
+
     return (
       <div>
+        <div id="ani" style={pos} className={this.state.animateColor} ></div>
         <table>
           <tbody>
             {_.range(this.props.boardSize).map((rowIndex) =>
-                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} handleClick={this.handleClick} board={this.state.board} handleHover={this.handleHover} currentTurn={this.state.currentTurn} isOnHover={this.isOnHover} isOnHoverCol={this.isOnHoverCol} isAnimating={this.isAnimating} isInsertLoc={this.isInsertLoc} />
+                <Row key={rowIndex} row={rowIndex} boardSize={this.props.boardSize} handleClick={this.handleClick} board={this.state.board} handleHover={this.handleHover} currentTurn={this.state.currentTurn} isOnHoverCol={this.isOnHoverCol} />
               )}
           </tbody>
         </table>
