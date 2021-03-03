@@ -162,7 +162,7 @@ class Board extends React.Component {
   render() {
 
     let pos = {
-      position: 'relative',
+      position: 'relative', 
       visibility: this.state.animateVisibility,
       top: this.state.animateYpos,
       left: this.state.animateXpos
