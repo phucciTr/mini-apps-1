@@ -45,9 +45,6 @@ class Board extends React.Component {
 
   handleClick(col, id) {
 
-    console.log('clickedId = ', id);
-    console.log('clicked col = ', col);
-
     if (!this.state.isInAnimation) {
       let bottomRow = this.props.boardSize - 1;
 
@@ -73,8 +70,8 @@ class Board extends React.Component {
     let animateStartPos = $(`#${animateId}`)[0].getBoundingClientRect();
 
     this.setState({
-      animateXpos: animateStartPos.x - 3,
-      animateYpos: animateStartPos.y,
+      animateXpos: animateStartPos.x - 4.4,
+      animateYpos: animateStartPos.y - animateStartPos.height,
       animateVisibility: 'visible'
     });
 
@@ -162,7 +159,7 @@ class Board extends React.Component {
   render() {
 
     let pos = {
-      position: 'relative', 
+      position: 'relative',
       visibility: this.state.animateVisibility,
       top: this.state.animateYpos,
       left: this.state.animateXpos
